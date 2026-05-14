@@ -152,22 +152,18 @@
             font-size: 0.9rem;
         }
 
-        /* 作者名字不折行 */
+        /* 确保作者名字不折行的类 */
         .author-name {
             white-space: nowrap;
             display: inline-block;
             margin-bottom: 0.5rem; 
         }
-
-        /* === 新增：机构名字不折行 === */
-        .affiliation-name {
-            white-space: nowrap;
-            display: inline-block;
-            margin-bottom: 0.2rem;
-        }
         
         footer a { color: var(--text-main); text-decoration: underline; }
 
+        /* =========================================
+           交互逻辑相关样式 (The Problem 区域)
+           ========================================= */
         .interactive-diagram-wrapper {
             position: relative;
             width: 100%;
@@ -214,6 +210,7 @@
             color: #0f172a;
         }
 
+        /* === 新增：气泡交替动画 === */
         .bubble-human {
             top: 22%; 
             left: 4%;
@@ -257,6 +254,7 @@
         .diagram-btn.human { color: #16a34a; border-color: #bbf7d0; animation: highlightHuman 8s infinite ease-in-out; }
         .diagram-btn.vlm { color: #dc2626; border-color: #fecdd3; animation: highlightVLM 8s infinite ease-in-out; }
 
+        /* === 动画关键帧定义 === */
         @keyframes fadeInOutHuman {
             0%, 42% { opacity: 1; visibility: visible; transform: translateY(0); }
             50%, 92% { opacity: 0; visibility: hidden; transform: translateY(10px); }
@@ -281,6 +279,7 @@
             100% { background: white; color: #dc2626; transform: scale(1); border-color:#fecdd3; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05); }
         }
         
+        /* 内部小标签文字样式，不受上方手写体影响 */
         .status-badge {
             display: inline-block;
             font-family: 'Outfit', sans-serif;
@@ -326,10 +325,10 @@
                 <span class="mr-4 author-name"><strong>Zhixiang Wang</strong><sup>4, <i class="fa-regular fa-envelope" style="font-size: 0.85em;"></i></sup></span>
             </div>
 
-            <div class="is-size-6 mt-2 has-text-grey" style="line-height: 1.8;">
-                <span class="mr-4 affiliation-name"><sup>1</sup>Wuhan University</span>
-                <span class="mr-4 affiliation-name"><sup>2</sup>Zhongguancun Academy</span>
-                <span class="mr-4 affiliation-name"><sup>3</sup>Beijing Institute of Technology</span>
+            <div class="is-size-6 mt-2 has-text-grey">
+                <span class="mr-4"><sup>1</sup>Wuhan University</span>
+                <span class="mr-4"><sup>2</sup>Zhongguancun Academy</span>
+                <span class="mr-4"><sup>3</sup>Beijing Institute of Technology</span>
                 <span class="mr-4 affiliation-name"><sup>4</sup>Alaya Studio, Shanda AI Research Tokyo</span>
             </div>
 
@@ -371,6 +370,139 @@
                 </p>
             </div>
         </div>
+
+        <div class="glass-card has-text-centered">
+            <span class="section-header">The Problem</span>
+            <div class="mb-5">
+                <h3 class="title is-3 section-title-gradient">The Visual Agency Gap</h3>
+            </div>
+            
+            <div class="interactive-diagram-wrapper">
+                <img src="./static/images/teaser_clean.png" alt="Active Agency vs Passive Capacity" class="diagram-base">
+                
+                <div class="overlay-bubble bubble-human">
+                    Coin is 2.5cm in diameter.<br>
+                    -> Bottle is 8 coins high<br>
+                    -> <strong>20cm</strong><br>
+                    <span class="status-badge" style="color: #16a34a;">
+                        <i class="fa-solid fa-check-circle"></i> Correct
+                    </span>
+                </div>
+
+                <div class="overlay-bubble bubble-vlm">
+                    Looks like a bottle<br>
+                    -> most bottles are<br>
+                    <strong>15cm</strong>.<br>
+                    <span class="status-badge" style="color: #dc2626;">
+                        <i class="fa-solid fa-times-circle"></i> Wrong
+                    </span>
+                </div>
+
+                <div class="diagram-controls">
+                    <div class="diagram-btn human">
+                        <i class="fa-solid fa-eye mr-2"></i>Human: Active Agency <i class="fa-solid fa-check ml-1"></i>
+                    </div>
+                    <div class="diagram-btn vlm">
+                        <i class="fa-solid fa-robot mr-2"></i>VLM: Passive Capacity <i class="fa-solid fa-xmark ml-1"></i>
+                    </div>
+                </div>
+            </div>
+
+            <p class="result-caption">
+                <strong>Figure 1:</strong> Comparison of Active Agency vs. Passive Capacity. While humans actively retrieve implicit visual cues (e.g., coin size) to solve problems, VLMs often ignore context and rely on priors. Watch the animation above to see their internal reasoning.
+            </p>
+        </div>
+
+        <div class="glass-card">
+            <span class="section-header has-text-centered">The Data</span>
+            <div class="has-text-centered mb-5">
+                <h3 class="title is-3 section-title-gradient">Task Distribution & Taxonomy</h3>
+            </div>
+            <div class="columns is-vcentered">
+                <div class="column is-6">
+                    <div class="image-container">
+                        <img src="./static/images/task_distribution.png" alt="V-IRD Task Distribution">
+                    </div>
+                    <p class="result-caption">
+                        <strong>Figure 3:</strong> Statistics of 4 categories and 10 tasks in V-IRD Benchmark.
+                    </p>
+                </div>
+                <div class="column is-6">
+                    <div class="content">
+                        <p class="mb-4">The V-IRD benchmark is structured into a hierarchical taxonomy spanning four core domains to ensure comprehensive cognitive coverage:</p>
+                        <ul class="stats-list">
+                            <li>
+                                <strong>Spatial Geometry (41%):</strong> Focusing on precise metrology tasks such as <em>Length</em>, <em>Distance</em>, <em>Volume</em>, and <em>Area</em>.
+                            </li>
+                            <li>
+                                <strong>Contextual Inference (29%):</strong> Challenges the model to deduce abstract information like <em>Environment</em> and <em>Remarks</em>.
+                            </li>
+                            <li>
+                                <strong>Physical Properties (21%):</strong> Covering <em>Temperature</em> (e.g., inferring from steam) and <em>Weight</em> estimation.
+                            </li>
+                            <li>
+                                <strong>Physical Logic (9%):</strong> Involving abstract reasoning such as <em>Electricity</em> (Ohm's Law) and <em>Kinematics</em>.
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="glass-card">
+            <span class="section-header has-text-centered">Examples</span>
+            <div class="has-text-centered mb-5">
+                <h3 class="title is-3 section-title-gradient">V-IRD Benchmark Cases</h3>
+            </div>
+            <p class="has-text-centered mb-5">
+                Representative instances requiring autonomous visual discovery across domains.
+            </p>
+            <div class="image-container">
+                <img src="./static/images/benchmark_examples.png" alt="V-IRD Benchmark Examples">
+            </div>
+            <p class="result-caption">
+                <strong>Figure 4:</strong> The questions are designed to be "Target-Exclusive", meaning they ask for the final answer without explicitly pointing to the visual evidence required to solve it.
+            </p>
+        </div>
+
+        <div class="glass-card">
+            <span class="section-header has-text-centered">Evaluation</span>
+            <div class="has-text-centered mb-5">
+                <h3 class="title is-3 section-title-gradient">Main Benchmark Results</h3>
+            </div>
+            
+            <p class="has-text-centered mb-6">
+                We evaluated a wide range of VLMs, from open-source 2B models to proprietary SOTA models like GPT-5.2 and Gemini-3-Pro.
+            </p>
+
+            <div class="image-container mb-6">
+                <img src="./static/images/main_results.png" alt="Main Benchmark Results Table">
+            </div>
+
+            <div class="content mt-6">
+                <h4 class="title is-5">Key Observations</h4>
+                <ul class="stats-list">
+                    <li>
+                        <strong>Severe Collapse in Spatial Geometry:</strong> Most models struggle significantly in spatial tasks (e.g., measuring length using a reference).
+                    </li>
+                    <li>
+                        <strong>Proprietary vs. Open Source:</strong> Closed-source models generally outperform open-source models, exhibiting stronger robustness in active retrieval.
+                    </li>
+                    <li>
+                        <strong>Agency Deficit is Universal:</strong> Despite differences in capacity, the deficit in visual agency remains a bottleneck across all architectures compared to human performance.
+                    </li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="glass-card">
+            <h3 class="title is-4 mb-4">BibTeX</h3>
+            <pre><code>bibtex</code></pre>
+        </div>
+
+        <footer class="has-text-centered pb-6">
+            <p>Project page for <strong>V-IRD</strong>.</p>
+        </footer>
 
     </div>
 </section>
