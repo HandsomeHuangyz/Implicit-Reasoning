@@ -152,9 +152,7 @@
             font-size: 0.9rem;
         }
 
-        /* =========================================
-           新增：确保作者名字不折行的类
-           ========================================= */
+        /* 确保作者名字不折行的类 */
         .author-name {
             white-space: nowrap;
             display: inline-block;
@@ -199,7 +197,6 @@
             box-shadow: 3px 3px 0px rgba(0,0,0,0.1);
             opacity: 0;
             visibility: hidden;
-            transition: all 0.3s ease-in-out;
             pointer-events: none; 
             z-index: 10;
             text-align: center;
@@ -213,11 +210,12 @@
             color: #0f172a;
         }
 
+        /* === 新增：气泡交替动画 === */
         .bubble-human {
             top: 22%; 
             left: 4%;
             width: 40%; 
-            transform: translateY(10px);
+            animation: fadeInOutHuman 8s infinite ease-in-out;
         }
         .bubble-human::after {
             right: 30%;
@@ -227,7 +225,7 @@
             top: 22%;
             right: 4%;
             width: 40%; 
-            transform: translateY(10px);
+            animation: fadeInOutVLM 8s infinite ease-in-out;
         }
         .bubble-vlm::after {
             left: 30%;
@@ -241,39 +239,61 @@
         }
 
         .diagram-btn {
+            display: inline-block;
             padding: 0.75rem 2rem;
             border-radius: 50px;
             font-family: 'Outfit', sans-serif;
             font-weight: 600;
             font-size: 1.1rem;
-            cursor: pointer;
-            transition: all 0.3s ease;
             background: white;
             border: 2px solid #e2e8f0;
             box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05);
+            text-align: center;
         }
 
-        .diagram-btn.human { color: #16a34a; border-color: #bbf7d0; }
-        .diagram-btn.vlm { color: #dc2626; border-color: #fecdd3; }
+        .diagram-btn.human { color: #16a34a; border-color: #bbf7d0; animation: highlightHuman 8s infinite ease-in-out; }
+        .diagram-btn.vlm { color: #dc2626; border-color: #fecdd3; animation: highlightVLM 8s infinite ease-in-out; }
 
-        .diagram-btn.human:hover { background: #16a34a; color: white; }
-        .diagram-btn.vlm:hover { background: #dc2626; color: white; }
-
-        .interactive-diagram-wrapper:has(.diagram-btn.human:hover) .bubble-human {
-            opacity: 1;
-            visibility: visible;
-            transform: translateY(0);
+        /* === 动画关键帧定义 === */
+        @keyframes fadeInOutHuman {
+            0%, 42% { opacity: 1; visibility: visible; transform: translateY(0); }
+            50%, 92% { opacity: 0; visibility: hidden; transform: translateY(10px); }
+            100% { opacity: 1; visibility: visible; transform: translateY(0); }
         }
 
-        .interactive-diagram-wrapper:has(.diagram-btn.vlm:hover) .bubble-vlm {
-            opacity: 1;
-            visibility: visible;
-            transform: translateY(0);
+        @keyframes fadeInOutVLM {
+            0%, 42% { opacity: 0; visibility: hidden; transform: translateY(10px); }
+            50%, 92% { opacity: 1; visibility: visible; transform: translateY(0); }
+            100% { opacity: 0; visibility: hidden; transform: translateY(10px); }
+        }
+
+        @keyframes highlightHuman {
+            0%, 42% { background: #16a34a; color: white; transform: scale(1.05); border-color:#16a34a; box-shadow: 0 10px 15px -3px rgba(22, 163, 74, 0.3); }
+            50%, 92% { background: white; color: #16a34a; transform: scale(1); border-color:#bbf7d0; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05); }
+            100% { background: #16a34a; color: white; transform: scale(1.05); border-color:#16a34a; box-shadow: 0 10px 15px -3px rgba(22, 163, 74, 0.3); }
+        }
+
+        @keyframes highlightVLM {
+            0%, 42% { background: white; color: #dc2626; transform: scale(1); border-color:#fecdd3; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05); }
+            50%, 92% { background: #dc2626; color: white; transform: scale(1.05); border-color:#dc2626; box-shadow: 0 10px 15px -3px rgba(220, 38, 38, 0.3); }
+            100% { background: white; color: #dc2626; transform: scale(1); border-color:#fecdd3; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05); }
         }
         
+        /* 内部小标签文字样式，不受上方手写体影响 */
+        .status-badge {
+            display: inline-block;
+            font-family: 'Outfit', sans-serif;
+            font-size: 1.2rem;
+            font-weight: 700;
+            margin-top: 0.5rem;
+            padding: 0.1rem 0.8rem;
+            border-radius: 20px;
+        }
+
         @media screen and (max-width: 768px) {
             h1.title.is-1 { font-size: 2.5rem; }
             .overlay-bubble { font-size: 0.95rem; padding: 0.8rem; width: 35%; }
+            .status-badge { font-size: 0.9rem; }
             .diagram-controls { flex-direction: column; gap: 1rem; }
         }
     </style>
@@ -297,7 +317,7 @@
                 <span class="mr-4 author-name"><strong>Haoyang Chen</strong><sup>1, 2, *</sup></span>
                 <span class="mr-4 author-name"><strong>Pohson Huang</strong><sup>1, *</sup></span>
                 <span class="mr-4 author-name"><strong>Jiayuan Li</strong><sup>2, 3, *</sup></span>
-                <span class="mr-4 author-name"><strong>Shiqin Wang</strong><sup>1, *</sup></span>
+                <span class="mr-4 author-name"><strong>Shiqin Wang</strong><sup>1, <i class="fa-regular fa-envelope" style="font-size: 0.85em;"></i></sup></span>
                 <span class="mr-4 author-name"><strong>Haoyuan Du</strong><sup>1</sup></span>
                 <span class="mr-4 author-name"><strong>Yandong Shi</strong><sup>1</sup></span>
                 
@@ -366,27 +386,33 @@
                 <div class="overlay-bubble bubble-human">
                     Coin is 2.5cm in diameter.<br>
                     -> Bottle is 8 coins high<br>
-                    -> <strong>20cm</strong>
+                    -> <strong>20cm</strong><br>
+                    <span class="status-badge" style="color: #16a34a;">
+                        <i class="fa-solid fa-check-circle"></i> Correct
+                    </span>
                 </div>
 
                 <div class="overlay-bubble bubble-vlm">
                     Looks like a bottle<br>
                     -> most bottles are<br>
-                    <strong>15cm</strong>.
+                    <strong>15cm</strong>.<br>
+                    <span class="status-badge" style="color: #dc2626;">
+                        <i class="fa-solid fa-times-circle"></i> Wrong
+                    </span>
                 </div>
 
                 <div class="diagram-controls">
-                    <button class="diagram-btn human">
-                        <i class="fa-solid fa-eye mr-2"></i>Human: Active Agency
-                    </button>
-                    <button class="diagram-btn vlm">
-                        <i class="fa-solid fa-robot mr-2"></i>VLM: Passive Capacity
-                    </button>
+                    <div class="diagram-btn human">
+                        <i class="fa-solid fa-eye mr-2"></i>Human: Active Agency <i class="fa-solid fa-check ml-1"></i>
+                    </div>
+                    <div class="diagram-btn vlm">
+                        <i class="fa-solid fa-robot mr-2"></i>VLM: Passive Capacity <i class="fa-solid fa-xmark ml-1"></i>
+                    </div>
                 </div>
             </div>
 
             <p class="result-caption">
-                <strong>Figure 1:</strong> Comparison of Active Agency vs. Passive Capacity. While humans actively retrieve implicit visual cues (e.g., coin size) to solve problems, VLMs often ignore context and rely on priors. Hover over the buttons to see the internal reasoning.
+                <strong>Figure 1:</strong> Comparison of Active Agency vs. Passive Capacity. While humans actively retrieve implicit visual cues (e.g., coin size) to solve problems, VLMs often ignore context and rely on priors. Watch the animation above to see their internal reasoning.
             </p>
         </div>
 
@@ -409,16 +435,16 @@
                         <p class="mb-4">The V-IRD benchmark is structured into a hierarchical taxonomy spanning four core domains to ensure comprehensive cognitive coverage:</p>
                         <ul class="stats-list">
                             <li>
-                                <strong>Spatial Geometry (38%):</strong> Focusing on precise metrology tasks such as <em>Length</em>, <em>Distance</em>, <em>Volume</em>, and <em>Area</em>.
+                                <strong>Spatial Geometry (41%):</strong> Focusing on precise metrology tasks such as <em>Length</em>, <em>Distance</em>, <em>Volume</em>, and <em>Area</em>.
                             </li>
                             <li>
                                 <strong>Contextual Inference (29%):</strong> Challenges the model to deduce abstract information like <em>Environment</em> and <em>Remarks</em>.
                             </li>
                             <li>
-                                <strong>Physical Properties (22%):</strong> Covering <em>Temperature</em> (e.g., inferring from steam) and <em>Weight</em> estimation.
+                                <strong>Physical Properties (21%):</strong> Covering <em>Temperature</em> (e.g., inferring from steam) and <em>Weight</em> estimation.
                             </li>
                             <li>
-                                <strong>Physical Logic (11%):</strong> Involving abstract reasoning such as <em>Electricity</em> (Ohm's Law) and <em>Kinematics</em>.
+                                <strong>Physical Logic (9%):</strong> Involving abstract reasoning such as <em>Electricity</em> (Ohm's Law) and <em>Kinematics</em>.
                             </li>
                         </ul>
                     </div>
@@ -474,12 +500,7 @@
 
         <div class="glass-card">
             <h3 class="title is-4 mb-4">BibTeX</h3>
-            <pre><code>@inproceedings{sun2026position,
-  title={Position: The Systemic Lack of Agency in Visual Reasoning},
-  author={Yizhao Huang, and Others},
-  booktitle={ICML},
-  year={2026}
-}</code></pre>
+            <pre><code>bibtex</code></pre>
         </div>
 
         <footer class="has-text-centered pb-6">
